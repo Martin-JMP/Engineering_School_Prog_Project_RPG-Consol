@@ -1991,6 +1991,7 @@ public class Game {
 
     public static void Feux() throws InterruptedException, LineUnavailableException, UnsupportedAudioFileException, IOException {
         File mp3Filefeux = new File("Fireworks.wav");
+        int test=1;
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3Filefeux);
         Clip clip = AudioSystem.getClip();
         clip.open(audioInputStream);
