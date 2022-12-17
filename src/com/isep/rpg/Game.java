@@ -677,7 +677,7 @@ public class Game {
                     System.out.println("Les heros commencent à jouer");
 
                     // Boucle de jeu
-                    for (int i = 1; i <= 50; i++) {
+                    for (int i = 1; i <= 100; i++) {
                         if (enemies.size() == 0) {
                             if(j==4){
                                 Win();
@@ -1302,7 +1302,7 @@ public class Game {
 
                     }
                     // Boucle de jeu
-                    for (int i = 1; i <= 50; i++) {
+                    for (int i = 1; i <= 100; i++) {
                         if (enemies.size() == 0) {
                             if(j==4){
                                 Win();
