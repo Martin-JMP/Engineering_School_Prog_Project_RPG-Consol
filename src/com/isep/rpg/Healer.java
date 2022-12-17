@@ -1,5 +1,9 @@
 package com.isep.rpg;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+
 public class Healer extends SpellCaster {
 
     int qtpotionforce = 3;
@@ -112,8 +116,14 @@ public class Healer extends SpellCaster {
         }
     }
 
-    public void heal(Combatant combatant) {
+    public void heal(Combatant combatant) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         combatant.win(weapon.getDamagePoints());
+        File mp3FileHeal = new File("src/Heal.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FileHeal);
+
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
     }
     public void afficherdegatNBPotionVie(Combatant combatant) {
         System.out.print(" - (" + potion.getVie() + "⚕"+ qtpotionvie + "\uD83D\uDC8A) ");
@@ -125,8 +135,14 @@ public class Healer extends SpellCaster {
 
     private Food food;
 
-    public void PotionVie(Combatant combatant) {
+    public void PotionVie(Combatant combatant) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
             if(qtpotionvie > 0) {
+                File mp3FilePotionVie = new File("src/Potion Vie.wav");
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FilePotionVie);
+
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
                 qtpotionvie = qtpotionvie -1 ;
                 combatant.win(potion.getVie());
                 System.out.println("Il vous reste " + qtpotionvie +" Potion de vie disponible.");
@@ -135,8 +151,14 @@ public class Healer extends SpellCaster {
             }
     }
 
-    public void PotionForce(Combatant combatant) {
+    public void PotionForce(Combatant combatant) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         if(qtpotionforce>0 ) {
+            File mp3FilePotionForce = new File("src/Potion Degat.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FilePotionForce);
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
             qtpotionforce = qtpotionforce - 1;
             combatant.loose(potion.getDamagePoints());
             System.out.println("Il vous reste " + qtpotionforce +" Potion de force disponible.");
