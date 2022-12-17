@@ -17,38 +17,29 @@ public class Game {
 
         this.inputParser = inputParser;
 
-        // Il faut normalement 5 héros de types différents...
         heros = new ArrayList<>();
 
-        // Il faut normalement 5 ennemis de types différents...
         enemies = new ArrayList<>();
 
     }
 
 
     public void start() throws LineUnavailableException, UnsupportedAudioFileException, IOException, InterruptedException {
-        File mp3File = new File("5-minutes-of-peaceful-piano-music-relaxing-mind-clearing-music-quick-piano-music-relaxing-music.wav");
+        displayMessage("Bonjour à vous, Bienvenue dans ce RPG");
+        displayMessage("La Partie commence !!!");
+        displayMessage(" ");
+        File mp3File = new File("src/RPG-Game2.wav");
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3File);
 
         Clip clip = AudioSystem.getClip();
         clip.open(audioInputStream);
         clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY);
-        //clip.stop();
 
 
 
         String Bleu = "\u001B[34m";
-        String Violet = "\u001B[35m";
-        String Violet_line = "\033[4;35m";
-        String PURPLE_BACKGROUND = "\033[45m";
-        //String GREEN_BACKGROUND = "\033[42m";
-        //String RED_BACKGROUND = "\033[41m";
-        //String BLUE_BACKGROUND = "\033[44m";
-        //String BLACK_BACKGROUND = "\033[40m";
         String RESET = "\u001B[0m";
-
-        //System.out.println("bfhdbvs" + PURPLE_BACKGROUND);
 
         Scanner scanner = new Scanner(System.in);
         displayMessage("Combien de Hero voulez-vous ?");
@@ -73,38 +64,38 @@ public class Game {
                 ChoixHero = scanner.nextInt();
             }
             if (ChoixHero == 1) {
-                Hero hunter = new Hunter("Hunter", 1, 2); // création du hero
+                Hero hunter = new Hunter("Hunter", 100, 25); // création du hero
                 hunter.take(new Weapon("Arrow", 20)); // création de l'arme utilisée par le Hero avec le nombre de dammage
-                hunter.take(new Food("Pomme",7,5));
-                hunter.take((new Potion("Potion",25,30)));
+                hunter.take(new Food("Pomme",5,5));
+                hunter.take((new Potion("Potion",20,30)));
                 hunter.take((new Armure("Armure",25)));
                 heros.add(hunter);
             } else if (ChoixHero == 2) {
                 Hero mage = new Mage("Mage", 100, 25); // création du hero
                 mage.take(new Weapon("Multiple attaque", 10)); // création de l'arme utilisée par le Hero avec le nombre de dammage
                 mage.take(new Food("Pomme",7,5));
-                mage.take((new Potion("Potion",25,30)));
+                mage.take((new Potion("Potion",20,30)));
                 mage.take((new Armure("Armure",25)));
                 heros.add(mage);
             } else if (ChoixHero == 3) {
                 Hero healer = new Healer("Healer", 100,25);// création du hero
                 healer.take(new Weapon("Soins", 15)); // création de l'arme utilisée par le Hero avec le nombre de dammage
                 healer.take(new Food("Pomme",7,5));
-                healer.take((new Potion("Potion",25,30)));
+                healer.take((new Potion("Potion",20,30)));
                 healer.take((new Armure("Armure",25)));
                 heros.add(healer);
             } else if (ChoixHero == 4) {
                 Hero warrior = new Warrior("Warrior", 100, 25); // création du hero
                 warrior.take(new Weapon("Knife", 15)); // création de l'arme utilisée par le Hero avec le nombre de dammage
                 warrior.take(new Food("Pomme",7,5));
-                warrior.take((new Potion("Potion",25,30)));
+                warrior.take((new Potion("Potion",20,30)));
                 warrior.take((new Armure("Armure",25)));
                 heros.add(warrior);
             }
 
                 Random random = new Random();
                 int valuetest = random.nextInt(5) + 2;
-                enemies.add(new Ennemy("Monstre", 20, 0,valuetest));
+                enemies.add(new Ennemy("Monstre", 40, 0,valuetest));
         }
 
         int damagePointsHunter= 20;
@@ -112,30 +103,36 @@ public class Game {
         int damagePointsWarrior= 15;
         int HealingHealer= 15;
         int damagePointsPotionDegat= 30;
-        int HealingPotionVie= 25;
+        int HealingPotionVie= 20;
         int FOOD= 7;
         int QTFOOD= 5;
 
         Random random = new Random();
         for (int j = 0; j <= 4; j++) {
-            if (j == 1) {
+            if (j==0){
+                round1();
+            }
+            else if (j == 1) {
+                if (heros.size() == 0) {
+                    break;
+                }
                 for (int i = 1; i <= heros.size(); i++) {
 
                     int valuetest = random.nextInt(5) + 5; // Initialisation du chiffre aléatoire entre 1 et 2
-                    enemies.add(new Ennemy("Monstre", 30, 0, valuetest)); // création de l'ennemie avec damagepoints aléatoire entre 1 et 3
+                    enemies.add(new Ennemy("Monstre", 60, 0, valuetest)); // création de l'ennemie avec damagepoints aléatoire entre 1 et 3
                 }
 
                     int ixHero3 = 0;
                 for (int i = 1; i <= heros.size(); i++) {
                     Combatant goodOnerécompense = heros.get(ixHero3);
                     displayMessage("******Vous pouvez choisir un avantage pour "+Bleu+ goodOnerécompense.getName() + RESET +" afin de bien débuter votre prochain combat.****** \n Liste des récompenses disponibles :");
-                    if(goodOnerécompense.getName()=="Hunter" || goodOnerécompense.getName()=="Mage" || goodOnerécompense.getName()=="Warrior"){ displayMessageReturn("[1]-Augmenter les dégats de l'arme (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
+                    if(goodOnerécompense.getName()=="Hunter" || goodOnerécompense.getName()=="Mage" || goodOnerécompense.getName()=="Warrior"){ displayMessageReturn("[1]-Augmenter les dégats de l'arme (aléatoirement entre 4 ou 10 de plus) |"+ Bleu +" Actuellement (");
                         goodOnerécompense.afficherdegat(heros.get(ixHero3));
                         displayMessage(RESET);}
-                    else if(goodOnerécompense.getName()=="Healer"){displayMessageReturn("[1]-Augmenter les soins (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
+                    else if(goodOnerécompense.getName()=="Healer"){displayMessageReturn("[1]-Augmenter les soins (aléatoirement entre 4 ou 10 de plus) |"+ Bleu +" Actuellement (");
                         goodOnerécompense.afficherdegat(heros.get(ixHero3));
                         displayMessage(RESET);}
-                    displayMessageReturn("[2]-Augmenter l'efficacité des potion et de la nourriture |"+ Bleu +" Actuellement (");
+                    displayMessageReturn("[2]-Augmenter l'efficacité des potions et de la nourriture |"+ Bleu +" Actuellement (");
                         goodOnerécompense.afficherdegatPotionDegat(heros.get(ixHero3));
                         goodOnerécompense.afficherdegatPotionVie(heros.get(ixHero3));
                         goodOnerécompense.afficherhealFOOD(heros.get(ixHero3));
@@ -182,42 +179,39 @@ public class Game {
                         ixHero3 = ixHero3 + 1;
 
                      } else if (choixrécompense == 2) {
-                        int nombreAleatoirePotionDegat = new Random().nextInt(2)+damagePointsPotionDegat;
-                        nombreAleatoirePotionDegat += 2;
-                        int nombreAleatoirePotionVie = new Random().nextInt(2)+HealingPotionVie;
-                        nombreAleatoirePotionVie += 2;
-                        int nombreAleatoireFood = new Random().nextInt(2)+FOOD;
-                        nombreAleatoireFood += 2;
+                        int nombreAleatoirePotionDegat = new Random().nextInt(2)+5;
+                        int nombreAleatoirePotionVie = new Random().nextInt(2)+5;
+                        int nombreAleatoireFood = new Random().nextInt(2)+1;
                         if(heros.get(ixHero3) instanceof Warrior){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*3/2;
-                            HealingPotionVie= nombreAleatoirePotionVie*3/2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Warrior) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
                             FOOD= nombreAleatoireFood*3/2;
                             ((Warrior) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Hunter){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*3/2;
-                            HealingPotionVie= nombreAleatoirePotionVie*3/2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Hunter) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*3/2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Hunter) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Mage){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*3/2;
-                            HealingPotionVie= nombreAleatoirePotionVie*3/2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Mage) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*3/2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Mage) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Healer){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*3/2;
-                            HealingPotionVie= nombreAleatoirePotionVie*3/2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Healer) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*3/2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Healer) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         ixHero3 = ixHero3 + 1;
@@ -257,11 +251,14 @@ public class Game {
                         ixHero3 = ixHero3 + 1;
                     }
                 }
-
+                round2();
             } else if (j == 2) {
+                if (heros.size() == 0) {
+                    break;
+                }
                 for (int i = 1; i <= heros.size(); i++) {
                     int valuetest = random.nextInt(3) + 7; // Initialisation du chiffre aléatoire entre 1 et 2
-                    enemies.add(new Ennemy("Monstre", 40, 0,valuetest)); // création de l'ennemie avec damagepoints aléatoire entre 1 et 3
+                    enemies.add(new Ennemy("Monstre", 80, 0,valuetest)); // création de l'ennemie avec damagepoints aléatoire entre 1 et 3
                 }
                 int ixHero3 = 0;
                 for (int i = 1; i <= heros.size(); i++) {
@@ -273,7 +270,7 @@ public class Game {
                     else if(goodOnerécompense.getName()=="Healer"){displayMessageReturn("[1]-Augmenter les soins (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
                         goodOnerécompense.afficherdegat(heros.get(ixHero3));
                         displayMessage(RESET);}
-                    displayMessageReturn("[2]-Augmenter l'efficacité des potion et de la nourriture |"+ Bleu +" Actuellement (");
+                    displayMessageReturn("[2]-Augmenter l'efficacité des potions et de la nourriture |"+ Bleu +" Actuellement (");
                     goodOnerécompense.afficherdegatPotionDegat(heros.get(ixHero3));
                     goodOnerécompense.afficherdegatPotionVie(heros.get(ixHero3));
                     goodOnerécompense.afficherhealFOOD(heros.get(ixHero3));
@@ -299,7 +296,7 @@ public class Game {
                     }
 
                     if (choixrécompense == 1) {
-                        int nombreAleatoire = new Random().nextInt(4);
+                        int nombreAleatoire = new Random().nextInt(4)+5;
 
                         if(heros.get(ixHero3) instanceof Warrior){
                             damagePointsWarrior= nombreAleatoire+damagePointsWarrior;
@@ -320,42 +317,39 @@ public class Game {
                         ixHero3 = ixHero3 + 1;
 
                     } else if (choixrécompense == 2) {
-                        int nombreAleatoirePotionDegat = new Random().nextInt(2)+damagePointsPotionDegat;
-                        nombreAleatoirePotionDegat += 2;
-                        int nombreAleatoirePotionVie = new Random().nextInt(2)+HealingPotionVie;
-                        nombreAleatoirePotionVie += 2;
-                        int nombreAleatoireFood = new Random().nextInt(2)+FOOD;
-                        nombreAleatoireFood += 2;
+                        int nombreAleatoirePotionDegat = new Random().nextInt(2)+5;
+                        int nombreAleatoirePotionVie = new Random().nextInt(2)+5;
+                        int nombreAleatoireFood = new Random().nextInt(2)+1;
                         if(heros.get(ixHero3) instanceof Warrior){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Warrior) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood*3/2;
                             ((Warrior) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Hunter){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Hunter) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Hunter) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Mage){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Mage) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Mage) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Healer){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Healer) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Healer) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         ixHero3 = ixHero3 + 1;
@@ -395,12 +389,15 @@ public class Game {
                         ixHero3 = ixHero3 + 1;
                     }
                 }
-
+               round3();
 
             } else if (j == 3) {
+                if (heros.size() == 0) {
+                    break;
+                }
                 for (int i = 1; i <= heros.size(); i++) {
                     int valuetest = random.nextInt(4) + 10; // Initialisation du chiffre aléatoire entre 1 et 2
-                    enemies.add(new Ennemy("Monstre", 50,0,valuetest)); // création de l'ennemie avec damagepoints aléatoire entre 1 et 3
+                    enemies.add(new Ennemy("Monstre", 100,0,valuetest)); // création de l'ennemie avec damagepoints aléatoire entre 1 et 3
                 }
                 int ixHero3 = 0;
                 for (int i = 1; i <= heros.size(); i++) {
@@ -412,7 +409,7 @@ public class Game {
                     else if(goodOnerécompense.getName()=="Healer"){displayMessageReturn("[1]-Augmenter les soins (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
                         goodOnerécompense.afficherdegat(heros.get(ixHero3));
                         displayMessage(RESET);}
-                    displayMessageReturn("[2]-Augmenter l'efficacité des potion et de la nourriture |"+ Bleu +" Actuellement (");
+                    displayMessageReturn("[2]-Augmenter l'efficacité des potions et de la nourriture |"+ Bleu +" Actuellement (");
                     goodOnerécompense.afficherdegatPotionDegat(heros.get(ixHero3));
                     goodOnerécompense.afficherdegatPotionVie(heros.get(ixHero3));
                     goodOnerécompense.afficherhealFOOD(heros.get(ixHero3));
@@ -438,7 +435,7 @@ public class Game {
                     }
 
                     if (choixrécompense == 1) {
-                        int nombreAleatoire = new Random().nextInt(4);
+                        int nombreAleatoire = new Random().nextInt(4)+5;
 
                         if(heros.get(ixHero3) instanceof Warrior){
                             damagePointsWarrior= nombreAleatoire+damagePointsWarrior;
@@ -459,42 +456,39 @@ public class Game {
                         ixHero3 = ixHero3 + 1;
 
                     } else if (choixrécompense == 2) {
-                        int nombreAleatoirePotionDegat = new Random().nextInt(2)+damagePointsPotionDegat;
-                        nombreAleatoirePotionDegat += 2;
-                        int nombreAleatoirePotionVie = new Random().nextInt(2)+HealingPotionVie;
-                        nombreAleatoirePotionVie += 2;
-                        int nombreAleatoireFood = new Random().nextInt(2)+FOOD;
-                        nombreAleatoireFood += 2;
+                        int nombreAleatoirePotionDegat = new Random().nextInt(2)+5;
+                        int nombreAleatoirePotionVie = new Random().nextInt(2)+5;
+                        int nombreAleatoireFood = new Random().nextInt(2)+1;
                         if(heros.get(ixHero3) instanceof Warrior){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Warrior) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood*3/2;
                             ((Warrior) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Hunter){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Hunter) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Hunter) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Mage){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Mage) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Mage) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         else if(heros.get(ixHero3) instanceof Healer){
-                            damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                            HealingPotionVie= nombreAleatoirePotionVie*2;
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
                             ((Healer) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
 
-                            FOOD= nombreAleatoireFood*2;
+                            FOOD= nombreAleatoireFood+FOOD;
                             ((Healer) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
                         }
                         ixHero3 = ixHero3 + 1;
@@ -534,145 +528,148 @@ public class Game {
                         ixHero3 = ixHero3 + 1;
                     }
                 }
+                round4();
 
             } else if (j == 4) {
+                if (heros.size() == 0) {
+                    break;
+                }
                 System.out.println("Bien joué, vous avez vaincu tous les monstres.");
                 System.out.println("Vous etes maintant au combat finale face au Dragon!!!!");
-                    int valuetest = random.nextInt(6) + 40; // Initialisation du chiffre aléatoire entre 1 et 2
+                    int valuetest = random.nextInt(6) + 20; // Initialisation du chiffre aléatoire entre 1 et 2
                     enemies.add(new Dragon("Dragon", 300,0,valuetest)); // création de l'ennemie avec damagepoints aléatoire entre 1 et 3
 
-            int ixHero3 = 0;
-            for (int i = 1; i <= heros.size(); i++) {
-                Combatant goodOnerécompense = heros.get(ixHero3);
-                displayMessage("******Vous pouvez choisir un avantage pour "+Bleu+ goodOnerécompense.getName() + RESET +" afin de bien débuter votre prochain combat.****** \n Liste des récompenses disponibles :");
-                if(goodOnerécompense.getName()=="Hunter" || goodOnerécompense.getName()=="Mage" || goodOnerécompense.getName()=="Warrior"){ displayMessageReturn("[1]-Augmenter les dégats de l'arme (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
-                    goodOnerécompense.afficherdegat(heros.get(ixHero3));
-                    displayMessage(RESET);}
-                else if(goodOnerécompense.getName()=="Healer"){displayMessageReturn("[1]-Augmenter les soins (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
-                    goodOnerécompense.afficherdegat(heros.get(ixHero3));
-                    displayMessage(RESET);}
-                displayMessageReturn("[2]-Augmenter l'efficacité des potion et de la nourriture |"+ Bleu +" Actuellement (");
-                goodOnerécompense.afficherdegatPotionDegat(heros.get(ixHero3));
-                goodOnerécompense.afficherdegatPotionVie(heros.get(ixHero3));
-                goodOnerécompense.afficherhealFOOD(heros.get(ixHero3));
-                displayMessage(RESET);
-                if(goodOnerécompense.getName()=="Hunter"){displayMessageReturn("[3]-Rajouter des flèches à votre arc |"+ Bleu +" Actuellement (");
-                    goodOnerécompense.afficherfleche(heros.get(ixHero3));
-                    displayMessage(RESET);}
-                else if(goodOnerécompense.getName()=="Mage"){displayMessageReturn("[3]-Rajouter 50 Mana |"+ Bleu +" Actuellement (");
-                    goodOnerécompense.affichermana(heros.get(ixHero3));
-                    displayMessage(RESET);}
-                else if(goodOnerécompense.getName()=="Healer" || goodOnerécompense.getName()=="Warrior" ){displayMessage("-------------------------------------");}
-                displayMessage("[4]-Rajouter des boucliers |"+ Bleu +" Actuellement (" + goodOnerécompense.getArmures() +"\uD83D\uDEE1)"+ RESET);
-                displayMessageReturn("[5]-Rajouter des potions de vie ou de dégat dans l'inventaire |"+ Bleu +" Actuellement potion de vie(");
-                goodOnerécompense.afficherNBPotionVie(heros.get(ixHero3)); displayMessageReturn("- potion de dégat(");
-                goodOnerécompense.afficherNBPotionDegat(heros.get(ixHero3)); displayMessage(RESET);
-                System.out.println(" ");
-                System.out.println("Que voulez-vous choisir comme récompense pour vos heros");
-                int choixrécompense = scanner.nextInt();
-                while (choixrécompense < 1 || choixrécompense > 5) {
-                    System.out.println("Choix incorrect!!! Veuillez choisir un nombre entre 1 et 5 correspondant à l'action voulut.");
-                    System.out.println("Votre choix: ");
-                    choixrécompense = scanner.nextInt();
-                }
-
-                if (choixrécompense == 1) {
-                    int nombreAleatoire = new Random().nextInt(4);
-
-                    if(heros.get(ixHero3) instanceof Warrior){
-                        damagePointsWarrior= nombreAleatoire+damagePointsWarrior;
-                        ((Warrior) heros.get(ixHero3)).take(new Weapon("Knife", damagePointsWarrior));
-                    }
-                    else if(heros.get(ixHero3) instanceof Hunter){
-                        damagePointsHunter= nombreAleatoire+damagePointsHunter;
-                        ((Hunter) heros.get(ixHero3)).take(new Weapon("Arrow", damagePointsHunter));
-                    }
-                    else if(heros.get(ixHero3) instanceof Mage){
-                        damagePointsMage= nombreAleatoire+damagePointsMage;
-                        ((Mage) heros.get(ixHero3)).take(new Weapon("Multiple attaque", damagePointsMage));
-                    }
-                    else if(heros.get(ixHero3) instanceof Healer){
-                        HealingHealer= nombreAleatoire+HealingHealer;
-                        ((Healer) heros.get(ixHero3)).take(new Weapon("Soin", HealingHealer));
-                    }
-                    ixHero3 = ixHero3 + 1;
-
-                } else if (choixrécompense == 2) {
-                    int nombreAleatoirePotionDegat = new Random().nextInt(2)+damagePointsPotionDegat;
-                    nombreAleatoirePotionDegat += 2;
-                    int nombreAleatoirePotionVie = new Random().nextInt(2)+HealingPotionVie;
-                    nombreAleatoirePotionVie += 2;
-                    int nombreAleatoireFood = new Random().nextInt(2)+FOOD;
-                    nombreAleatoireFood += 2;
-                    if(heros.get(ixHero3) instanceof Warrior){
-                        damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                        HealingPotionVie= nombreAleatoirePotionVie*2;
-                        ((Warrior) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
-
-                        FOOD= nombreAleatoireFood*2;
-                        ((Warrior) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
-                    }
-                    else if(heros.get(ixHero3) instanceof Hunter){
-                        damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                        HealingPotionVie= nombreAleatoirePotionVie*2;
-                        ((Hunter) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
-
-                        FOOD= nombreAleatoireFood*2;
-                        ((Hunter) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
-                    }
-                    else if(heros.get(ixHero3) instanceof Mage){
-                        damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                        HealingPotionVie= nombreAleatoirePotionVie*2;
-                        ((Mage) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
-
-                        FOOD= nombreAleatoireFood*2;
-                        ((Mage) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
-                    }
-                    else if(heros.get(ixHero3) instanceof Healer){
-                        damagePointsPotionDegat= nombreAleatoirePotionDegat*2;
-                        HealingPotionVie= nombreAleatoirePotionVie*2;
-                        ((Healer) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
-
-                        FOOD= nombreAleatoireFood*2;
-                        ((Healer) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
-                    }
-                    ixHero3 = ixHero3 + 1;
-
-                } else if (choixrécompense == 3) {
-                    if(goodOnerécompense.getName() == "Hunter"){
-                        goodOnerécompense.Rajouterarrow(heros.get(1));
-                    } else if(goodOnerécompense.getName() == "Mage") {
-                        goodOnerécompense.Rajoutermana(heros.get(ixHero3));
-                    }
-                    ixHero3 = ixHero3 + 1;
-                } else if (choixrécompense == 4) {
-                    if(heros.get(ixHero3) instanceof Healer){
-                        goodOnerécompense.protectionWin(heros.get(ixHero3));
-                    }  else if(heros.get(ixHero3) instanceof Hunter) {
-                        goodOnerécompense.protectionWin(heros.get(ixHero3));
-                    } else if(heros.get(ixHero3) instanceof Mage) {
-                        goodOnerécompense.protectionWin(heros.get(ixHero3));
-                    } else if(heros.get(ixHero3) instanceof Warrior) {
-                        goodOnerécompense.protectionWin(heros.get(ixHero3));
-                    }
-                    ixHero3 = ixHero3 + 1;
-
-                } else if (choixrécompense == 5) {
-                    System.out.println("[1]-Rajouter des potions de vie / [2]-Rajouter des potions de dégat");
-                    int choixrécompensepotion = scanner.nextInt();
-                    while (choixrécompensepotion < 1 || choixrécompensepotion > 2) {
-                        System.out.println("Choix incorrect!!! Veuillez choisir un nombre entre 1 et 2 correspondant au choix voulut.");
+                int ixHero3 = 0;
+                for (int i = 1; i <= heros.size(); i++) {
+                    Combatant goodOnerécompense = heros.get(ixHero3);
+                    displayMessage("******Vous pouvez choisir un avantage pour "+Bleu+ goodOnerécompense.getName() + RESET +" afin de bien débuter votre prochain combat.****** \n Liste des récompenses disponibles :");
+                    if(goodOnerécompense.getName()=="Hunter" || goodOnerécompense.getName()=="Mage" || goodOnerécompense.getName()=="Warrior"){ displayMessageReturn("[1]-Augmenter les dégats de l'arme (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
+                        goodOnerécompense.afficherdegat(heros.get(ixHero3));
+                        displayMessage(RESET);}
+                    else if(goodOnerécompense.getName()=="Healer"){displayMessageReturn("[1]-Augmenter les soins (aléatoirement entre 2 ou 4 de plus) |"+ Bleu +" Actuellement (");
+                        goodOnerécompense.afficherdegat(heros.get(ixHero3));
+                        displayMessage(RESET);}
+                    displayMessageReturn("[2]-Augmenter l'efficacité des potions et de la nourriture |"+ Bleu +" Actuellement (");
+                    goodOnerécompense.afficherdegatPotionDegat(heros.get(ixHero3));
+                    goodOnerécompense.afficherdegatPotionVie(heros.get(ixHero3));
+                    goodOnerécompense.afficherhealFOOD(heros.get(ixHero3));
+                    displayMessage(RESET);
+                    if(goodOnerécompense.getName()=="Hunter"){displayMessageReturn("[3]-Rajouter des flèches à votre arc |"+ Bleu +" Actuellement (");
+                        goodOnerécompense.afficherfleche(heros.get(ixHero3));
+                        displayMessage(RESET);}
+                    else if(goodOnerécompense.getName()=="Mage"){displayMessageReturn("[3]-Rajouter 50 Mana |"+ Bleu +" Actuellement (");
+                        goodOnerécompense.affichermana(heros.get(ixHero3));
+                        displayMessage(RESET);}
+                    else if(goodOnerécompense.getName()=="Healer" || goodOnerécompense.getName()=="Warrior" ){displayMessage("-------------------------------------");}
+                    displayMessage("[4]-Rajouter des boucliers |"+ Bleu +" Actuellement (" + goodOnerécompense.getArmures() +"\uD83D\uDEE1)"+ RESET);
+                    displayMessageReturn("[5]-Rajouter des potions de vie ou de dégat dans l'inventaire |"+ Bleu +" Actuellement potion de vie(");
+                    goodOnerécompense.afficherNBPotionVie(heros.get(ixHero3)); displayMessageReturn("- potion de dégat(");
+                    goodOnerécompense.afficherNBPotionDegat(heros.get(ixHero3)); displayMessage(RESET);
+                    System.out.println(" ");
+                    System.out.println("Que voulez-vous choisir comme récompense pour vos heros");
+                    int choixrécompense = scanner.nextInt();
+                    while (choixrécompense < 1 || choixrécompense > 5) {
+                        System.out.println("Choix incorrect!!! Veuillez choisir un nombre entre 1 et 5 correspondant à l'action voulut.");
                         System.out.println("Votre choix: ");
-                        choixrécompensepotion = scanner.nextInt();
+                        choixrécompense = scanner.nextInt();
                     }
-                    if (choixrécompensepotion == 1){
-                        goodOnerécompense.RajouterPotionVie(heros.get(ixHero3));
-                    } else if(choixrécompensepotion == 2){
-                        goodOnerécompense.RajouterPotionDegat(heros.get(ixHero3));
+
+                    if (choixrécompense == 1) {
+                        int nombreAleatoire = new Random().nextInt(4)+5;
+
+                        if(heros.get(ixHero3) instanceof Warrior){
+                            damagePointsWarrior= nombreAleatoire+damagePointsWarrior;
+                            ((Warrior) heros.get(ixHero3)).take(new Weapon("Knife", damagePointsWarrior));
+                        }
+                        else if(heros.get(ixHero3) instanceof Hunter){
+                            damagePointsHunter= nombreAleatoire+damagePointsHunter;
+                            ((Hunter) heros.get(ixHero3)).take(new Weapon("Arrow", damagePointsHunter));
+                        }
+                        else if(heros.get(ixHero3) instanceof Mage){
+                            damagePointsMage= nombreAleatoire+damagePointsMage;
+                            ((Mage) heros.get(ixHero3)).take(new Weapon("Multiple attaque", damagePointsMage));
+                        }
+                        else if(heros.get(ixHero3) instanceof Healer){
+                            HealingHealer= nombreAleatoire+HealingHealer;
+                            ((Healer) heros.get(ixHero3)).take(new Weapon("Soin", HealingHealer));
+                        }
+                        ixHero3 = ixHero3 + 1;
+
+                    } else if (choixrécompense == 2) {
+                        int nombreAleatoirePotionDegat = new Random().nextInt(2)+5;
+                        int nombreAleatoirePotionVie = new Random().nextInt(2)+5;
+                        int nombreAleatoireFood = new Random().nextInt(2)+1;
+                        if(heros.get(ixHero3) instanceof Warrior){
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
+                            ((Warrior) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
+
+                            FOOD= nombreAleatoireFood*3/2;
+                            ((Warrior) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
+                        }
+                        else if(heros.get(ixHero3) instanceof Hunter){
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
+                            ((Hunter) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
+
+                            FOOD= nombreAleatoireFood+FOOD;
+                            ((Hunter) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
+                        }
+                        else if(heros.get(ixHero3) instanceof Mage){
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
+                            ((Mage) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
+
+                            FOOD= nombreAleatoireFood+FOOD;
+                            ((Mage) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
+                        }
+                        else if(heros.get(ixHero3) instanceof Healer){
+                            damagePointsPotionDegat= nombreAleatoirePotionDegat+damagePointsPotionDegat;
+                            HealingPotionVie= nombreAleatoirePotionVie+HealingPotionVie;
+                            ((Healer) heros.get(ixHero3)).take(new Potion("Potion", HealingPotionVie,damagePointsPotionDegat));
+
+                            FOOD= nombreAleatoireFood+FOOD;
+                            ((Healer) heros.get(ixHero3)).take(new Food("Pomme", FOOD, QTFOOD));
+                        }
+                        ixHero3 = ixHero3 + 1;
+
+                    } else if (choixrécompense == 3) {
+                        if(goodOnerécompense.getName() == "Hunter"){
+                            goodOnerécompense.Rajouterarrow(heros.get(1));
+                        } else if(goodOnerécompense.getName() == "Mage") {
+                            goodOnerécompense.Rajoutermana(heros.get(ixHero3));
+                        }
+                        ixHero3 = ixHero3 + 1;
+                    } else if (choixrécompense == 4) {
+                        if(heros.get(ixHero3) instanceof Healer){
+                            goodOnerécompense.protectionWin(heros.get(ixHero3));
+                        }  else if(heros.get(ixHero3) instanceof Hunter) {
+                            goodOnerécompense.protectionWin(heros.get(ixHero3));
+                        } else if(heros.get(ixHero3) instanceof Mage) {
+                            goodOnerécompense.protectionWin(heros.get(ixHero3));
+                        } else if(heros.get(ixHero3) instanceof Warrior) {
+                            goodOnerécompense.protectionWin(heros.get(ixHero3));
+                        }
+                        ixHero3 = ixHero3 + 1;
+
+                    } else if (choixrécompense == 5) {
+                        System.out.println("[1]-Rajouter des potions de vie / [2]-Rajouter des potions de dégat");
+                        int choixrécompensepotion = scanner.nextInt();
+                        while (choixrécompensepotion < 1 || choixrécompensepotion > 2) {
+                            System.out.println("Choix incorrect!!! Veuillez choisir un nombre entre 1 et 2 correspondant au choix voulut.");
+                            System.out.println("Votre choix: ");
+                            choixrécompensepotion = scanner.nextInt();
+                        }
+                        if (choixrécompensepotion == 1){
+                            goodOnerécompense.RajouterPotionVie(heros.get(ixHero3));
+                        } else if(choixrécompensepotion == 2){
+                            goodOnerécompense.RajouterPotionDegat(heros.get(ixHero3));
+                        }
+                        ixHero3 = ixHero3 + 1;
                     }
-                    ixHero3 = ixHero3 + 1;
                 }
-            }}
+               roundfinal();
+            }
 
                 int value = random.nextInt(2) + 1; // Initialisation du chiffre aléatoire entre 1 et 2
 
@@ -683,12 +680,19 @@ public class Game {
                     for (int i = 1; i <= 20; i++) {
                         if (enemies.size() == 0) {
                             if(j==4){
+                                Win();
                                 Feux();
                                 break;
                             }
                             else{
                                 break;
                             } }
+
+                        else if (heros.size() == 0) {
+                            displayMessage("Malheureusement il n'y a plus de hero en vie");
+                            displayMessage("La partie se termine donc ici");
+                                break;
+                            }
                         System.out.println("-------------------------- Round n°" + i + " --------------------------");
 
                         displayStatus(heros, enemies);
@@ -698,7 +702,11 @@ public class Game {
 
                         for (int k = 1; k <= heros.size(); k++) {
                             if (enemies.size() == 0) {
-                                System.out.println("bRAVOIl n'y a plus de monstre, Combat suivant.");
+                                System.out.println("Bravo, il n'y a plus de monstre, Combat suivant.");
+                                System.out.println("");
+                                break;
+                            }
+                            else if(heros.size() == 0){
                                 break;
                             }
                             Combatant goodOne = heros.get(ixHero);
@@ -1297,6 +1305,7 @@ public class Game {
                     for (int i = 1; i <= 20; i++) {
                         if (enemies.size() == 0) {
                             if(j==4){
+                                Win();
                                 Feux();
                                 break;
                             }
@@ -1304,16 +1313,25 @@ public class Game {
                                 break;
                             }
                         }
+                        else if (heros.size() == 0) {
+                            displayMessage("Malheureusement il n'y a plus de hero en vie");
+                            displayMessage("La partie se termine donc ici");
+                            break;
+                        }
                         System.out.println("-------------------------- Round n°" + i + " --------------------------");
 
                         displayStatus(heros, enemies);
                         int ixHero = 0;
                         int ixEnemies = 0;
 
-
                         for (int k = 1; k <= heros.size(); k++) {
+
                             if (enemies.size() == 0) {
-                                System.out.println("Il n'y a plus de monstre, Combat suivant.");
+                                System.out.println("Bravo, il n'y a plus de monstre, Combat suivant.");
+                                System.out.println(" ");
+                                break;
+                            }
+                            else if (heros.size() == 0) {
                                 break;
                             }
                             Combatant goodOne = heros.get(ixHero);
@@ -1897,14 +1915,6 @@ public class Game {
     private List<Combatant> heros;
     private List<Combatant> enemies;
 
-
-
-    // Méthodes d'affichage
-    // (STATIQUES pour pouvoir les appeler depuis n'importe où dans le programme)
-    //
-    // => pourraient éventuellement être déplacées dans le package
-    //    "com.isep.utils", en s'inspirant de "InputParser" (méthodes de saisie)
-
     public static void displayStatus(List<Combatant> h, List<Combatant> e) {
         int ixHeroStatus = 0;
         for (Combatant c: h) {
@@ -1927,20 +1937,6 @@ public class Game {
         System.out.println();
     }
 
-    public static void Statusheros(List<Combatant> e) {
-        for (Combatant c: e) {
-            System.out.print(c.getName() + "(" + c.getHp() + "\u2764|" + c.getArmures() + "\uD83D\uDEE1| ) ");
-        }
-        System.out.println();
-    }
-
-    public static void mortHeromagie(List<Combatant> heros, int ixHero){
-        Combatant goodOne = heros.get(ixHero);
-        if (heros.get(ixHero).getHp() <= 0) {
-            displayMessage("Malheuresement nous venons de perdre " + goodOne.getName() + " car il a été vaincu !!!");
-            heros.remove(ixHero);
-        }
-    }
     public static void Attaque(List<Combatant> heros, List<Combatant> enemies, int ixEnemies, int ixHero){
         String Verth = "\033[0;92m";
         String RESET = "\u001B[0m";
@@ -1953,7 +1949,7 @@ public class Game {
             enemies.remove(ixEnemies);
         }
     }
-    public static void attaquePotion(List<Combatant> heros, List<Combatant> enemies, int ixEnemies, int ixHero) {
+    public static void attaquePotion(List<Combatant> heros, List<Combatant> enemies, int ixEnemies, int ixHero) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         String Verth = "\033[0;92m";
         String RESET = "\u001B[0m";
         Combatant goodOne = heros.get(ixHero);
@@ -1967,15 +1963,15 @@ public class Game {
     }
 
     public static void mortHero(List<Combatant> heros, int ixHero) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        File mp3FilemortHero = new File("gta-v-bruitage-de-la-mort-mp3-edxward-kenway-38-youtube-hd-2016.wav");
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FilemortHero);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
-        clip.start();
         Combatant goodOne = heros.get(ixHero);
        if (goodOne.getHp() <= 0) {
-            displayMessage("Malheuresement nous venons de perdre " + goodOne.getName() + " car il a été vaincu !!!");
+            displayMessage("Malheureusement nous venons de perdre " + goodOne.getName() + " car il a été vaincu !!!");
             heros.remove(ixHero);
+            File mp3FilemortHero = new File("src/Bruit-de-mort.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FilemortHero);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
         }
     }
 
@@ -1990,16 +1986,13 @@ public class Game {
     }
 
     public static void Feux() throws InterruptedException, LineUnavailableException, UnsupportedAudioFileException, IOException {
-        File mp3Filefeux = new File("Fireworks.wav");
-        int test=1;
+        File mp3Filefeux = new File("src/Fireworks.wav");
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3Filefeux);
         Clip clip = AudioSystem.getClip();
         clip.open(audioInputStream);
         clip.start();
 
-        String BLACK_BRIGHT = "\033[0;90m";  // BLACK
         String RED_BRIGHT = "\033[0;91m";    // RED
-        String GREEN_BRIGHT = "\033[0;92m";  // GREEN
         String YELLOW_BRIGHT = "\033[0;93m"; // YELLOW
         String BLUE_BRIGHT = "\033[0;94m";   // BLUE
         String PURPLE_BRIGHT = "\033[0;95m"; // PURPLE
@@ -2027,12 +2020,64 @@ public class Game {
     public static void retard(String message) throws InterruptedException {
         for (int i = 0; i < message.length(); i++) {
             System.out.print(message.charAt(i));
-            Thread.sleep(25); // met en pause l'exécution pendant 100 millisecondes
+            Thread.sleep(10);
         }
         displayMessage("");
     }
 
+    public static void Win() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File mp3FileWin = new File("src/Win.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FileWin);
 
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+    }
+
+    public static void round1() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File mp3FileRound1 = new File("src/Round1.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FileRound1);
+
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+    }
+
+    public static void round2() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File mp3FileRound2 = new File("src/Round2.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FileRound2);
+
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+    }
+
+    public static void round3() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File mp3FileRound3 = new File("src/Round3.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FileRound3);
+
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+    }
+
+    public static void round4() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File mp3FileRound4 = new File("src/Round4.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FileRound4);
+
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+    }
+
+    public static void roundfinal() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File mp3FileRoundfinal = new File("src/Final Round.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FileRoundfinal);
+
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+    }
     public static void displayMessage(String message) {
         System.out.println(message);
     }
