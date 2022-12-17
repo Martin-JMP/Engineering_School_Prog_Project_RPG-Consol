@@ -1,5 +1,8 @@
 package com.isep.rpg;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 public abstract class Combatant {
@@ -44,14 +47,14 @@ public abstract class Combatant {
 
     public abstract void protectionLoose(Combatant combatant);
 
-    public abstract void heal(Combatant combatant);
+    public abstract void heal(Combatant combatant) throws UnsupportedAudioFileException, IOException, LineUnavailableException;
 
 
     public abstract void manger(Combatant combatant);
 
-    public abstract void PotionVie(Combatant combatant);
+    public abstract void PotionVie(Combatant combatant) throws UnsupportedAudioFileException, IOException, LineUnavailableException;
 
-    public abstract void PotionForce(Combatant combatant);
+    public abstract void PotionForce(Combatant combatant) throws UnsupportedAudioFileException, IOException, LineUnavailableException;
     public abstract void RajouterPotionVie(Combatant combatant);
 
     public abstract void RajouterPotionDegat(Combatant combatant);
