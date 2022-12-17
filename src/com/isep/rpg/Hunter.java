@@ -1,5 +1,9 @@
 package com.isep.rpg;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+
 public class Hunter extends Hero{
 
     int arrow = 15;
@@ -118,8 +122,14 @@ public class Hunter extends Hero{
     private Food food;
 private Weapon weapon;
 
-    public void PotionVie(Combatant combatant) {
+    public void PotionVie(Combatant combatant) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         if(qtpotionvie > 0) {
+            File mp3FilePotionVie = new File("src/Potion Vie.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FilePotionVie);
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
             qtpotionvie = qtpotionvie -1 ;
             combatant.win(potion.getVie());
             System.out.println("Il vous reste " + qtpotionvie +" Potion de vie disponible.");
@@ -128,8 +138,14 @@ private Weapon weapon;
         }
     }
 
-    public void PotionForce(Combatant combatant) {
+    public void PotionForce(Combatant combatant) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         if(qtpotionforce>0 ) {
+            File mp3FilePotionForce = new File("src/Potion Degat.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mp3FilePotionForce);
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
             qtpotionforce = qtpotionforce - 1;
             combatant.loose(potion.getDamagePoints());
             System.out.println("Il vous reste " + qtpotionforce +" Potion de force disponible.");
